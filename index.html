@@ -67,57 +67,48 @@ tr.replied { background: #dafbe1; }
 tr.expired { color: #99a; }
 .snippet { font-style: italic; color: #1a7f37; }
 .muted { color: #6e7781; font-size: 13px; }
+.controls { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; background: #fff;
+            border: 1px solid #d0d7de; border-radius: 10px; padding: 12px 16px; margin-bottom: 16px; }
+.controls label { font-size: 13px; font-weight: 600; color: #57606a; }
+.controls select { font-size: 14px; padding: 6px 8px; margin-left: 6px; border-radius: 6px;
+                   border: 1px solid #d0d7de; background: #f6f8fa; font-weight: 600; color: #1f2328; }
 .action { background: #fff; border: 1px solid #d0d7de; border-radius: 10px; padding: 8px 18px; }
 footer { text-align: center; color: #8b949e; font-size: 12px; padding: 24px; }
 </style></head>
 <body>
 <header>
   <h1>Toronto Rental Digest</h1>
-  <div class="counts">Saturday, June 13, 2026 &nbsp;|&nbsp; 9 new today &middot; 11 total in pipeline &middot; 0 outreach sent &middot; 0 replies received</div>
+  <div class="counts">Saturday, June 13, 2026 &nbsp;|&nbsp; 0 new today &middot; 6 total in pipeline &middot; 0 outreach sent &middot; 0 replies received</div>
 </header>
 
 
 
 <div class="datasource live">LIVE DATA — scraped from Rentals.ca, Kijiji, Realtor.ca, Craigslist, Facebook Marketplace &middot; anchor: 352 Front St W &middot; within 1.4 km walk &middot; private landlords only</div>
 <div class="wrap">
-  <h2>Top Matches (10)</h2>
-  
-    <div class="card">
-      <div class="left"><div class="photos"><a href="photos/realtorca-29891982/photo_1.jpg" target="_blank"><img src="https://xveeynneyhpynfjphrzh.supabase.co/storage/v1/object/public/digest/photos/realtorca-29891982/photo_1.jpg" loading="lazy" alt="listing photo"></a></div></div>
-      <div class="right">
-        <div class="scorerow">
-          <span class="badge" style="background:#bf8700">60</span>
-          <span class="title">2705 - 15 ICEBOAT TERRACE</span>
-        </div>
-        <div class="addr">2705 - 15 ICEBOAT TERRACE · 0.47 km from anchor · near Dan Leckie Way &amp; Fort York Blvd</div>
-        <div class="kv">
-          <span class="rent">$2,000/mo</span>
-          <span>Floor 27</span>
-          <span>Furnished: No</span>
-          <span>Avail: —</span>
-          
-        </div>
-        <div class="amenities"><span class="am yes">Gym &#10003;</span> <span class="am yes">Sauna &#10003;</span> <span class="am yes">Pool &#10003;</span> <span class="am yes">Concierge (24hr) &#10003;</span> <span class="amsrc verified">Amenities independently verified</span></div>
-        <div class="meta">Realtor.ca · Posted 24 hr ago</div>
-        <div class="notes"><span class="flag">Posted &lt;48h</span></div>
-        <div class="breakdown"><span class="bd">(+15) rent $2,000 in target band</span> <span class="bd">(+10) floor 27 (10+)</span> <span class="bd">(+10) sauna + pool</span> <span class="bd">(+5) 24hr concierge</span> <span class="bd">(+10) new listing (&lt;48h)</span> <span class="bd">(+5) photos available</span> <span class="bd">(+5) known high-rise building</span></div>
-        <div class="buttons">
-          <a class="btn view" href="https://www.realtor.ca/real-estate/29891982/2705-15-iceboat-terrace-toronto-waterfront-communities-waterfront-communities-c1" target="_blank">View Listing</a>
-          <a class="btn send platform" href="https://www.realtor.ca/real-estate/29891982/2705-15-iceboat-terrace-toronto-waterfront-communities-waterfront-communities-c1" target="_blank">Open Listing to Send &#9993;</a>
-        </div>
-        <details class="draft"><summary>Drafted message (copy-paste)</summary><div class="drafttext"><strong>Inquiry re: 2705 - 15 ICEBOAT TERRACE — Available September 1, 2026</strong><pre>Hi,
-
-I came across your listing for 2705 - 15 ICEBOAT TERRACE and I&#x27;m very interested. A bit about me: I&#x27;m a long-term renter looking for a one-bedroom starting September 1, 2026. I have an 800+ credit score, strong landlord references, and I&#x27;m prepared to move quickly — I can provide a complete application package including credit report, references, and bank statements on the same day as a viewing.
-
-I&#x27;d love to schedule a time to see the unit if it&#x27;s still available. What works best for you?
-
-Thanks,
-Ty Hoesgen
-ty.hoesgen@gmail.com
-(416) 553-4098</pre></div></details>
-      </div>
-    </div>
-    <div class="card">
+  <h2>Top Matches (6)</h2>
+  <div class="controls">
+    <label>Sort:
+      <select id="sortby" onchange="applyControls()">
+        <option value="default">Recommended (Aug/Sep first, then closest)</option>
+        <option value="dist">Closest to 352 Front</option>
+        <option value="date">Soonest available</option>
+        <option value="rent">Lowest rent</option>
+        <option value="score">Best match (score)</option>
+      </select>
+    </label>
+    <label>Availability:
+      <select id="availfilter" onchange="applyControls()">
+        <option value="all">All</option>
+        <option value="target">Aug or Sep only</option>
+        <option value="aug">August only</option>
+        <option value="sep">September only</option>
+        <option value="hasdate">Has a stated date</option>
+      </select>
+    </label>
+    <span id="showncount" class="muted"></span>
+  </div>
+  <div id="cards">
+    <div class="card" data-dist="0.44" data-rent="2150" data-score="50" data-availdate="" data-availmonth="" data-target="0" data-immediate="0">
       <div class="left"><div class="photos"><a href="photos/realtorca-29853237/photo_1.jpg" target="_blank"><img src="https://xveeynneyhpynfjphrzh.supabase.co/storage/v1/object/public/digest/photos/realtorca-29853237/photo_1.jpg" loading="lazy" alt="listing photo"></a></div></div>
       <div class="right">
         <div class="scorerow">
@@ -134,7 +125,7 @@ ty.hoesgen@gmail.com
         </div>
         <div class="amenities"><span class="am yes">Gym &#10003;</span> <span class="am yes">Sauna &#10003;</span> <span class="am yes">Pool &#10003;</span> <span class="am yes">Concierge (24hr) &#10003;</span> <span class="amsrc verified">Amenities independently verified</span></div>
         <div class="meta">Realtor.ca · Posted unknown</div>
-        <div class="notes"><span class="flag new">New today</span></div>
+        <div class="notes"></div>
         <div class="breakdown"><span class="bd">(+15) rent $2,150 in target band</span> <span class="bd">(+10) floor 50 (10+)</span> <span class="bd">(+10) sauna + pool</span> <span class="bd">(+5) 24hr concierge</span> <span class="bd">(+5) photos available</span> <span class="bd">(+5) known high-rise building</span></div>
         <div class="buttons">
           <a class="btn view" href="https://www.realtor.ca/real-estate/29853237/5009-11-brunel-court-e-toronto-waterfront-communities-waterfront-communities-c1" target="_blank">View Listing</a>
@@ -152,7 +143,7 @@ ty.hoesgen@gmail.com
 (416) 553-4098</pre></div></details>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-dist="0.35" data-rent="1000" data-score="50" data-availdate="" data-availmonth="" data-target="0" data-immediate="0">
       <div class="left"><div class="photos"><a href="photos/realtorca-29656253/photo_1.jpg" target="_blank"><img src="https://xveeynneyhpynfjphrzh.supabase.co/storage/v1/object/public/digest/photos/realtorca-29656253/photo_1.jpg" loading="lazy" alt="listing photo"></a></div></div>
       <div class="right">
         <div class="scorerow">
@@ -169,7 +160,7 @@ ty.hoesgen@gmail.com
         </div>
         <div class="amenities"><span class="am yes">Gym &#10003;</span> <span class="am yes">Sauna &#10003;</span> <span class="am yes">Pool &#10003;</span> <span class="am yes">Concierge (24hr) &#10003;</span> <span class="amsrc verified">Amenities independently verified</span></div>
         <div class="meta">Realtor.ca · Posted unknown</div>
-        <div class="notes"><span class="flag new">New today</span></div>
+        <div class="notes"></div>
         <div class="breakdown"><span class="bd">(+15) rent $1,000 below target band</span> <span class="bd">(+10) floor 20 (10+)</span> <span class="bd">(+10) sauna + pool</span> <span class="bd">(+5) 24hr concierge</span> <span class="bd">(+5) photos available</span> <span class="bd">(+5) known high-rise building</span></div>
         <div class="buttons">
           <a class="btn view" href="https://www.realtor.ca/real-estate/29656253/2007-3-navy-wharf-court-toronto-waterfront-communities-waterfront-communities-c1" target="_blank">View Listing</a>
@@ -187,7 +178,7 @@ ty.hoesgen@gmail.com
 (416) 553-4098</pre></div></details>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-dist="0.21" data-rent="1800" data-score="50" data-availdate="" data-availmonth="" data-target="0" data-immediate="0">
       <div class="left"><div class="photos"><a href="photos/realtorca-29609240/photo_1.jpg" target="_blank"><img src="https://xveeynneyhpynfjphrzh.supabase.co/storage/v1/object/public/digest/photos/realtorca-29609240/photo_1.jpg" loading="lazy" alt="listing photo"></a></div></div>
       <div class="right">
         <div class="scorerow">
@@ -204,7 +195,7 @@ ty.hoesgen@gmail.com
         </div>
         <div class="amenities"><span class="am yes">Gym &#10003;</span> <span class="am yes">Sauna &#10003;</span> <span class="am yes">Pool &#10003;</span> <span class="am yes">Concierge (24hr) &#10003;</span> <span class="amsrc verified">Amenities independently verified</span></div>
         <div class="meta">Realtor.ca · Posted unknown</div>
-        <div class="notes"><span class="flag new">New today</span></div>
+        <div class="notes"></div>
         <div class="breakdown"><span class="bd">(+15) rent $1,800 below target band</span> <span class="bd">(+10) floor 10 (10+)</span> <span class="bd">(+10) sauna + pool</span> <span class="bd">(+5) 24hr concierge</span> <span class="bd">(+5) photos available</span> <span class="bd">(+5) known high-rise building</span></div>
         <div class="buttons">
           <a class="btn view" href="https://www.realtor.ca/real-estate/29609240/1010-1-concord-cityplace-way-toronto-waterfront-communities-waterfront-communities-c1" target="_blank">View Listing</a>
@@ -222,42 +213,7 @@ ty.hoesgen@gmail.com
 (416) 553-4098</pre></div></details>
       </div>
     </div>
-    <div class="card">
-      <div class="left"><div class="photos"><a href="photos/realtorca-29830981/photo_1.jpg" target="_blank"><img src="https://xveeynneyhpynfjphrzh.supabase.co/storage/v1/object/public/digest/photos/realtorca-29830981/photo_1.jpg" loading="lazy" alt="listing photo"></a></div></div>
-      <div class="right">
-        <div class="scorerow">
-          <span class="badge" style="background:#6e7781">45</span>
-          <span class="title">533 - 21 ICEBOAT TERRACE</span>
-        </div>
-        <div class="addr">533 - 21 ICEBOAT TERRACE · 0.51 km from anchor · near Dan Leckie Way &amp; Fort York Blvd</div>
-        <div class="kv">
-          <span class="rent">$2,200/mo</span>
-          <span>Floor 5</span>
-          <span>Furnished: No</span>
-          <span>Avail: —</span>
-          
-        </div>
-        <div class="amenities"><span class="am yes">Gym &#10003;</span> <span class="am yes">Sauna &#10003;</span> <span class="am yes">Pool &#10003;</span> <span class="am yes">Concierge (24hr) &#10003;</span> <span class="amsrc verified">Amenities independently verified</span></div>
-        <div class="meta">Realtor.ca · Posted unknown</div>
-        <div class="notes"><span class="flag new">New today</span></div>
-        <div class="breakdown"><span class="bd">(+15) rent $2,200 in target band</span> <span class="bd">(+5) floor 5 (5-9)</span> <span class="bd">(+10) sauna + pool</span> <span class="bd">(+5) 24hr concierge</span> <span class="bd">(+5) photos available</span> <span class="bd">(+5) known high-rise building</span></div>
-        <div class="buttons">
-          <a class="btn view" href="https://www.realtor.ca/real-estate/29830981/533-21-iceboat-terrace-toronto-waterfront-communities-waterfront-communities-c1" target="_blank">View Listing</a>
-          <a class="btn send platform" href="https://www.realtor.ca/real-estate/29830981/533-21-iceboat-terrace-toronto-waterfront-communities-waterfront-communities-c1" target="_blank">Open Listing to Send &#9993;</a>
-        </div>
-        <details class="draft"><summary>Drafted message (copy-paste)</summary><div class="drafttext"><strong>Inquiry re: 533 - 21 ICEBOAT TERRACE — Available September 1, 2026</strong><pre>Hi,
-
-I came across your listing for 533 - 21 ICEBOAT TERRACE and I&#x27;m very interested. A bit about me: I&#x27;m a long-term renter looking for a one-bedroom starting September 1, 2026. I have an 800+ credit score, strong landlord references, and I&#x27;m prepared to move quickly — I can provide a complete application package including credit report, references, and bank statements on the same day as a viewing.
-
-I&#x27;d love to schedule a time to see the unit if it&#x27;s still available. What works best for you?
-
-Thanks,
-Ty Hoesgen
-ty.hoesgen@gmail.com
-(416) 553-4098</pre></div></details>
-      </div>
-    </div>
-    <div class="card">
+    <div class="card" data-dist="0.21" data-rent="2300" data-score="40" data-availdate="" data-availmonth="" data-target="0" data-immediate="0">
       <div class="left"><div class="photos"><a href="photos/realtorca-29879647/photo_1.jpg" target="_blank"><img src="https://xveeynneyhpynfjphrzh.supabase.co/storage/v1/object/public/digest/photos/realtorca-29879647/photo_1.jpg" loading="lazy" alt="listing photo"></a></div></div>
       <div class="right">
         <div class="scorerow">
@@ -292,7 +248,7 @@ ty.hoesgen@gmail.com
 (416) 553-4098</pre></div></details>
       </div>
     </div>
-    <div class="card">
+    <div class="card" data-dist="0.21" data-rent="2300" data-score="40" data-availdate="" data-availmonth="" data-target="0" data-immediate="0">
       <div class="left"><div class="photos"><a href="photos/realtorca-29849187/photo_1.jpg" target="_blank"><img src="https://xveeynneyhpynfjphrzh.supabase.co/storage/v1/object/public/digest/photos/realtorca-29849187/photo_1.jpg" loading="lazy" alt="listing photo"></a></div></div>
       <div class="right">
         <div class="scorerow">
@@ -309,7 +265,7 @@ ty.hoesgen@gmail.com
         </div>
         <div class="amenities"><span class="am yes">Gym &#10003;</span> <span class="am yes">Sauna &#10003;</span> <span class="am yes">Pool &#10003;</span> <span class="am yes">Concierge (24hr) &#10003;</span> <span class="amsrc verified">Amenities independently verified</span></div>
         <div class="meta">Realtor.ca · Posted unknown</div>
-        <div class="notes"><span class="flag new">New today</span></div>
+        <div class="notes"></div>
         <div class="breakdown"><span class="bd">(+5) rent $2,300 near ceiling</span> <span class="bd">(+10) floor 35 (10+)</span> <span class="bd">(+10) sauna + pool</span> <span class="bd">(+5) 24hr concierge</span> <span class="bd">(+5) photos available</span> <span class="bd">(+5) known high-rise building</span></div>
         <div class="buttons">
           <a class="btn view" href="https://www.realtor.ca/real-estate/29849187/3512-1-concord-cityplace-way-toronto-waterfront-communities-waterfront-communities-c1" target="_blank">View Listing</a>
@@ -327,102 +283,32 @@ ty.hoesgen@gmail.com
 (416) 553-4098</pre></div></details>
       </div>
     </div>
-    <div class="card">
-      <div class="left"><div class="photos"><a href="photos/realtorca-29836225/photo_1.jpg" target="_blank"><img src="https://xveeynneyhpynfjphrzh.supabase.co/storage/v1/object/public/digest/photos/realtorca-29836225/photo_1.jpg" loading="lazy" alt="listing photo"></a></div></div>
-      <div class="right">
-        <div class="scorerow">
-          <span class="badge" style="background:#6e7781">40</span>
-          <span class="title">#1201 - 15 ICEBOAT TERRACE</span>
-        </div>
-        <div class="addr">#1201 - 15 ICEBOAT TERRACE · 0.45 km from anchor · near Dan Leckie Way &amp; Fort York Blvd</div>
-        <div class="kv">
-          <span class="rent">$2,280/mo</span>
-          <span>Floor 12</span>
-          <span>Furnished: No</span>
-          <span>Avail: —</span>
-          
-        </div>
-        <div class="amenities"><span class="am yes">Gym &#10003;</span> <span class="am yes">Sauna &#10003;</span> <span class="am yes">Pool &#10003;</span> <span class="am yes">Concierge (24hr) &#10003;</span> <span class="amsrc verified">Amenities independently verified</span></div>
-        <div class="meta">Realtor.ca · Posted unknown</div>
-        <div class="notes"><span class="flag new">New today</span></div>
-        <div class="breakdown"><span class="bd">(+5) rent $2,280 near ceiling</span> <span class="bd">(+10) floor 12 (10+)</span> <span class="bd">(+10) sauna + pool</span> <span class="bd">(+5) 24hr concierge</span> <span class="bd">(+5) photos available</span> <span class="bd">(+5) known high-rise building</span></div>
-        <div class="buttons">
-          <a class="btn view" href="https://www.realtor.ca/real-estate/29836225/1201-15-iceboat-terrace-toronto-waterfront-communities-waterfront-communities-c1" target="_blank">View Listing</a>
-          <a class="btn send platform" href="https://www.realtor.ca/real-estate/29836225/1201-15-iceboat-terrace-toronto-waterfront-communities-waterfront-communities-c1" target="_blank">Open Listing to Send &#9993;</a>
-        </div>
-        <details class="draft"><summary>Drafted message (copy-paste)</summary><div class="drafttext"><strong>Inquiry re: #1201 - 15 ICEBOAT TERRACE — Available September 1, 2026</strong><pre>Hi,
-
-I came across your listing for #1201 - 15 ICEBOAT TERRACE and I&#x27;m very interested. A bit about me: I&#x27;m a long-term renter looking for a one-bedroom starting September 1, 2026. I have an 800+ credit score, strong landlord references, and I&#x27;m prepared to move quickly — I can provide a complete application package including credit report, references, and bank statements on the same day as a viewing.
-
-I&#x27;d love to schedule a time to see the unit if it&#x27;s still available. What works best for you?
-
-Thanks,
-Ty Hoesgen
-ty.hoesgen@gmail.com
-(416) 553-4098</pre></div></details>
-      </div>
-    </div>
-    <div class="card">
-      <div class="left"><div class="photos"><a href="photos/realtorca-29651471/photo_1.jpg" target="_blank"><img src="https://xveeynneyhpynfjphrzh.supabase.co/storage/v1/object/public/digest/photos/realtorca-29651471/photo_1.jpg" loading="lazy" alt="listing photo"></a></div></div>
-      <div class="right">
-        <div class="scorerow">
-          <span class="badge" style="background:#6e7781">40</span>
-          <span class="title">1103 - 15 ICEBOAT TERRACE</span>
-        </div>
-        <div class="addr">1103 - 15 ICEBOAT TERRACE · 0.47 km from anchor · near Dan Leckie Way &amp; Fort York Blvd</div>
-        <div class="kv">
-          <span class="rent">$2,300/mo</span>
-          <span>Floor 11</span>
-          <span>Furnished: No</span>
-          <span>Avail: —</span>
-          
-        </div>
-        <div class="amenities"><span class="am yes">Gym &#10003;</span> <span class="am yes">Sauna &#10003;</span> <span class="am yes">Pool &#10003;</span> <span class="am yes">Concierge (24hr) &#10003;</span> <span class="amsrc verified">Amenities independently verified</span></div>
-        <div class="meta">Realtor.ca · Posted unknown</div>
-        <div class="notes"><span class="flag new">New today</span></div>
-        <div class="breakdown"><span class="bd">(+5) rent $2,300 near ceiling</span> <span class="bd">(+10) floor 11 (10+)</span> <span class="bd">(+10) sauna + pool</span> <span class="bd">(+5) 24hr concierge</span> <span class="bd">(+5) photos available</span> <span class="bd">(+5) known high-rise building</span></div>
-        <div class="buttons">
-          <a class="btn view" href="https://www.realtor.ca/real-estate/29651471/1103-15-iceboat-terrace-toronto-waterfront-communities-waterfront-communities-c1" target="_blank">View Listing</a>
-          <a class="btn send platform" href="https://www.realtor.ca/real-estate/29651471/1103-15-iceboat-terrace-toronto-waterfront-communities-waterfront-communities-c1" target="_blank">Open Listing to Send &#9993;</a>
-        </div>
-        <details class="draft"><summary>Drafted message (copy-paste)</summary><div class="drafttext"><strong>Inquiry re: 1103 - 15 ICEBOAT TERRACE — Available September 1, 2026</strong><pre>Hi,
-
-I came across your listing for 1103 - 15 ICEBOAT TERRACE and I&#x27;m very interested. A bit about me: I&#x27;m a long-term renter looking for a one-bedroom starting September 1, 2026. I have an 800+ credit score, strong landlord references, and I&#x27;m prepared to move quickly — I can provide a complete application package including credit report, references, and bank statements on the same day as a viewing.
-
-I&#x27;d love to schedule a time to see the unit if it&#x27;s still available. What works best for you?
-
-Thanks,
-Ty Hoesgen
-ty.hoesgen@gmail.com
-(416) 553-4098</pre></div></details>
-      </div>
-    </div>
-    <div class="card">
-      <div class="left"><div class="photos"><a href="photos/realtorca-29772990/photo_1.jpg" target="_blank"><img src="https://xveeynneyhpynfjphrzh.supabase.co/storage/v1/object/public/digest/photos/realtorca-29772990/photo_1.jpg" loading="lazy" alt="listing photo"></a></div></div>
+    <div class="card" data-dist="1.06" data-rent="2300" data-score="35" data-availdate="" data-availmonth="" data-target="0" data-immediate="0">
+      <div class="left"><div class="photos"><a href="photos/realtorca-29730593/photo_1.jpg" target="_blank"><img src="https://xveeynneyhpynfjphrzh.supabase.co/storage/v1/object/public/digest/photos/realtorca-29730593/photo_1.jpg" loading="lazy" alt="listing photo"></a></div></div>
       <div class="right">
         <div class="scorerow">
           <span class="badge" style="background:#6e7781">35</span>
-          <span class="title">837 - 15 ICEBOAT TERRACE</span>
+          <span class="title">1831 - 38 GRAND MAGAZINE STREET</span>
         </div>
-        <div class="addr">837 - 15 ICEBOAT TERRACE · 0.47 km from anchor · near Dan Leckie Way &amp; Fort York Blvd</div>
+        <div class="addr">1831 - 38 GRAND MAGAZINE STREET · 1.06 km from anchor · near Fort York Blvd &amp; Bathurst St</div>
         <div class="kv">
           <span class="rent">$2,300/mo</span>
-          <span>Floor 8</span>
+          <span>Floor 18</span>
           <span>Furnished: No</span>
           <span>Avail: —</span>
           
         </div>
-        <div class="amenities"><span class="am yes">Gym &#10003;</span> <span class="am yes">Sauna &#10003;</span> <span class="am yes">Pool &#10003;</span> <span class="am yes">Concierge (24hr) &#10003;</span> <span class="amsrc verified">Amenities independently verified</span></div>
+        <div class="amenities"><span class="am yes">Gym &#10003;</span> <span class="am yes">Sauna &#10003;</span> <span class="am yes">Pool &#10003;</span> <span class="am yes">Concierge &#10003;</span> <span class="amsrc verified">Amenities independently verified</span></div>
         <div class="meta">Realtor.ca · Posted unknown</div>
-        <div class="notes"><span class="flag new">New today</span></div>
-        <div class="breakdown"><span class="bd">(+5) rent $2,300 near ceiling</span> <span class="bd">(+5) floor 8 (5-9)</span> <span class="bd">(+10) sauna + pool</span> <span class="bd">(+5) 24hr concierge</span> <span class="bd">(+5) photos available</span> <span class="bd">(+5) known high-rise building</span></div>
+        <div class="notes"></div>
+        <div class="breakdown"><span class="bd">(+5) rent $2,300 near ceiling</span> <span class="bd">(+10) floor 18 (10+)</span> <span class="bd">(+10) sauna + pool</span> <span class="bd">(+5) photos available</span> <span class="bd">(+5) known high-rise building</span></div>
         <div class="buttons">
-          <a class="btn view" href="https://www.realtor.ca/real-estate/29772990/837-15-iceboat-terrace-toronto-waterfront-communities-waterfront-communities-c1" target="_blank">View Listing</a>
-          <a class="btn send platform" href="https://www.realtor.ca/real-estate/29772990/837-15-iceboat-terrace-toronto-waterfront-communities-waterfront-communities-c1" target="_blank">Open Listing to Send &#9993;</a>
+          <a class="btn view" href="https://www.realtor.ca/real-estate/29730593/1831-38-grand-magazine-street-toronto-waterfront-communities-waterfront-communities-c1" target="_blank">View Listing</a>
+          <a class="btn send platform" href="https://www.realtor.ca/real-estate/29730593/1831-38-grand-magazine-street-toronto-waterfront-communities-waterfront-communities-c1" target="_blank">Open Listing to Send &#9993;</a>
         </div>
-        <details class="draft"><summary>Drafted message (copy-paste)</summary><div class="drafttext"><strong>Inquiry re: 837 - 15 ICEBOAT TERRACE — Available September 1, 2026</strong><pre>Hi,
+        <details class="draft"><summary>Drafted message (copy-paste)</summary><div class="drafttext"><strong>Inquiry re: 1831 - 38 GRAND MAGAZINE STREET — Available September 1, 2026</strong><pre>Hi,
 
-I came across your listing for 837 - 15 ICEBOAT TERRACE and I&#x27;m very interested. A bit about me: I&#x27;m a long-term renter looking for a one-bedroom starting September 1, 2026. I have an 800+ credit score, strong landlord references, and I&#x27;m prepared to move quickly — I can provide a complete application package including credit report, references, and bank statements on the same day as a viewing.
+I came across your listing for 1831 - 38 GRAND MAGAZINE STREET and I&#x27;m very interested. A bit about me: I&#x27;m a long-term renter looking for a one-bedroom starting September 1, 2026. I have an 800+ credit score, strong landlord references, and I&#x27;m prepared to move quickly — I can provide a complete application package including credit report, references, and bank statements on the same day as a viewing.
 
 I&#x27;d love to schedule a time to see the unit if it&#x27;s still available. What works best for you?
 
@@ -431,15 +317,51 @@ Ty Hoesgen
 ty.hoesgen@gmail.com
 (416) 553-4098</pre></div></details>
       </div>
-    </div>
+    </div></div>
 
-  <h2>Unverified / Possible Corporate (2)</h2><p class="muted">Met the unit criteria but may be corporate-managed — you decide.</p><table class="outreach possible"><thead><tr><th>Building</th><th>Rent</th><th>Contact</th><th>Why flagged</th></tr></thead><tbody><tr><td><a href="https://rentals.ca/toronto/9-spadina" target="_blank">9 Spadina </a></td><td>$2,300</td><td>Linda</td><td class="reason">listed by an agent/management contact</td></tr><tr><td><a href="https://rentals.ca/toronto/458-richmond-street-west-id1401644" target="_blank">The Woodsworth Condos</a></td><td>$2,200</td><td>Jeff Poon</td><td class="reason">listed by an agent/management contact</td></tr></tbody></table>
+  <h2>Unverified / Possible Corporate (4)</h2><p class="muted">Met the unit criteria but may be corporate-managed — you decide.</p><table class="outreach possible"><thead><tr><th>Building</th><th>Rent</th><th>Contact</th><th>Why flagged</th></tr></thead><tbody><tr><td><a href="https://rentals.ca/toronto/3-concord-concord-canada-house" target="_blank">3 Concord (Concord Canada House)</a></td><td>$2,250</td><td>Linda</td><td class="reason">listed by an agent/management contact</td></tr><tr><td><a href="https://rentals.ca/toronto/9-spadina" target="_blank">9 Spadina </a></td><td>$2,300</td><td>Linda</td><td class="reason">listed by an agent/management contact</td></tr><tr><td><a href="https://rentals.ca/toronto/458-richmond-street-west-id1401644" target="_blank">The Woodsworth Condos</a></td><td>$2,200</td><td>Jeff Poon</td><td class="reason">listed by an agent/management contact</td></tr><tr><td><a href="https://rentals.ca/toronto/126-simcoe" target="_blank">126 Simcoe</a></td><td>$2,100</td><td>Linda</td><td class="reason">listed by an agent/management contact</td></tr></tbody></table>
 
   <h2>Outreach Status</h2>
   <p class="muted">No outreach sent yet. Use the “Send Outreach” buttons above.</p>
 
   <h2>Action Required</h2>
-  <div class="action"><ul><li>10 listing(s) have no direct email — use the per-card draft to message via the listing page.</li></ul></div>
+  <div class="action"><ul><li>6 listing(s) have no direct email — use the per-card draft to message via the listing page.</li></ul></div>
 </div>
-<footer>Generated by the Toronto Rental pipeline &middot; 2026-06-13 13:53 UTC</footer>
+<footer>Generated by the Toronto Rental pipeline &middot; 2026-06-13 22:36 UTC</footer>
+<script>
+function applyControls() {
+  var cont = document.getElementById('cards');
+  if (!cont) return;
+  var cards = Array.prototype.slice.call(cont.querySelectorAll('.card'));
+  var sortby = document.getElementById('sortby').value;
+  var filt = document.getElementById('availfilter').value;
+  var shown = 0;
+  cards.forEach(function(c) {
+    var month = c.dataset.availmonth, target = c.dataset.target === '1';
+    var immediate = c.dataset.immediate === '1';
+    var hasdate = (c.dataset.availdate !== '') || immediate;
+    var show = true;
+    if (filt === 'target') show = target;
+    else if (filt === 'aug') show = (month === '2026-08');
+    else if (filt === 'sep') show = (month === '2026-09');
+    else if (filt === 'hasdate') show = hasdate;
+    c.style.display = show ? '' : 'none';
+    if (show) shown++;
+  });
+  var num = function(c, k) { return parseFloat(c.dataset[k]); };
+  var sd = function(c) { return c.dataset.immediate === '1' ? '2000-01-01' : (c.dataset.availdate || '9999-12-31'); };
+  cards.sort(function(a, b) {
+    if (sortby === 'score') return num(b, 'score') - num(a, 'score');
+    if (sortby === 'dist') return num(a, 'dist') - num(b, 'dist');
+    if (sortby === 'rent') return num(a, 'rent') - num(b, 'rent');
+    if (sortby === 'date') return sd(a).localeCompare(sd(b)) || num(a, 'dist') - num(b, 'dist');
+    var t = (b.dataset.target === '1' ? 1 : 0) - (a.dataset.target === '1' ? 1 : 0);
+    return t !== 0 ? t : num(a, 'dist') - num(b, 'dist');
+  });
+  cards.forEach(function(c) { cont.appendChild(c); });
+  var lbl = document.getElementById('showncount');
+  if (lbl) lbl.textContent = shown + ' of ' + cards.length + ' shown';
+}
+applyControls();
+</script>
 </body></html>
